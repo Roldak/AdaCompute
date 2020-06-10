@@ -64,10 +64,7 @@ package Buf is new Buffer (Natural, 10);
 package Rng is new Int_Range (Integer, -5, 5);
 
 --  Copy this range to the buffer
-package Cpy is new Copy (Rng.I, Buf.A);
-
---  Prepare a dispatch operation
-package Kernel is new Cpy.Dispatch;
+package Kernel is new Store_All (Rng.I, Buf.A);
 ```
 
 Fortunately, this program will not even compile! First, the compiler will complain that you are trying to assign integer
