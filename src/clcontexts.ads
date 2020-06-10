@@ -1,7 +1,6 @@
 with CL.Platforms;
 with CL.Contexts;
 with CL.Command_Queues;
-with CL.Events;
 
 package CLContexts is
    type Context is record
