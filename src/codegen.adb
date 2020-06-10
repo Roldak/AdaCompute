@@ -11,14 +11,18 @@ package body Codegen is
    end Append_CL_Object;
 
    function Signature (Ctx : Emit_Context) return Code is
+      use type Ada.Containers.Count_Type;
+
       function Create_Signature (N : Natural) return String is
          Ref  : constant CL_Object := Ctx.Kernel_Arguments (N);
          Self : constant Code := "__global int* " & Ref.Name.all;
       begin
-         return Self;
+         if N = Natural (Ctx.Kernel_Arguments.Length - 1) then
+            return Self;
+         else
+            return Self & ", " & Create_Signature (N + 1);
+         end if;
       end Create_Signature;
-
-      use type Ada.Containers.Count_Type;
    begin
       if Ctx.Kernel_Arguments.Length = 0 then
          return "";
