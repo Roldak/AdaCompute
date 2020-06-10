@@ -1,5 +1,6 @@
 with Expr;
 with Codegen;
+with Operation;
 
 generic
    type From_1 is private;
@@ -22,4 +23,14 @@ package Operation_2 is
 
       package E is new Expr (Result_Type, Generate_Code);
    end Call;
+
+   generic
+      with package Arg_1 is new Expr (Param_Type_1, <>);
+   package Apply_First is
+      function Generate_Code
+        (Arg_2_Code : Codegen.Code;
+         Ctx : in out Codegen.Emit_Context) return Codegen.Code;
+
+      package Op is new Operation (Param_Type_2, Result_Type, Generate_Code);
+   end Apply_First;
 end Operation_2;

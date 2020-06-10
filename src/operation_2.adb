@@ -9,4 +9,15 @@ package body Operation_2 is
          return Emit (Arg_1_Code, Arg_2_Code, Ctx);
       end Generate_Code;
    end Call;
+
+   package body Apply_First is
+      function Generate_Code
+        (Arg_2_Code : Codegen.Code;
+         Ctx : in out Codegen.Emit_Context) return Codegen.Code
+      is
+         Arg_1_Code : constant Codegen.Code := Arg_1.Generate_Code (Ctx);
+      begin
+         return Emit (Arg_1_Code, Arg_2_Code, Ctx);
+      end Generate_Code;
+   end Apply_First;
 end Operation_2;
