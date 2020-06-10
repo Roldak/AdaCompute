@@ -1,3 +1,5 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 with GID;
 
 with CL.Queueing.Memory_Objects;
@@ -56,4 +58,18 @@ package body Buffer is
         (Ctx.Queue, Internal_Buffer, True, 0, Values, Event);
       Event.Wait_For;
    end Read;
+
+   procedure Dump is
+      Values : Array_Type;
+   begin
+      Read (Values);
+      Put ("[");
+      for I in Values'Range loop
+         Put (Image (Values (I)));
+         if I < Values'Last then
+            Put (", ");
+         end if;
+      end loop;
+      Put_Line ("]");
+   end Dump;
 end Buffer;

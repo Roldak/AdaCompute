@@ -36,4 +36,8 @@ package Buffer is
    procedure Write (Values : Array_Type);
 
    procedure Read (Values : out Array_Type);
+
+   generic
+      with function Image (X : T) return String;
+   procedure Dump;
 end Buffer;
