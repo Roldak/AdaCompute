@@ -23,6 +23,9 @@ package Codegen is
       Statements : Unbounded_String;
    end record;
 
+   function Pop_Statements
+     (Ctx : in out Emit_Context) return Unbounded_String;
+
    procedure Append_CL_Object (Ctx : in out Emit_Context; Obj : CL_Object);
 
    function Signature (Ctx : Emit_Context) return Code;

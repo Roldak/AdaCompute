@@ -19,12 +19,12 @@ procedure Convolution_1D_Example is
 
    package Rng_1 is new Int_Range (Integer, 0, 9);
    package Rng_2 is new Int_Range (Integer, -1, 1);
+   package Zero is new Const (Integer, 0);
 
    package Add is new BinOps.Arithmetic_2 (BinOps.Add, Integer);
-   package Buf_Get is new Buf.Safe_Get (0);
+   package Buf_Get is new Buf.Safe_Get (Zero.E);
    package Buf_Add_Get is new Operations.Combine_2_1 (Add.Op, Buf_Get.Op);
 
-   package Zero is new Const (Integer, 0);
    package Trf is new Map_2 (Buf_Add_Get.Op, Rng_1.I, Rng_2.I);
    package Red is new Reduce_2 (Zero.E, Add.Op, Trf.I);
    package Kernel is new Store_All (Red.I, Buf.A);

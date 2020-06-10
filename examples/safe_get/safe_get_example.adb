@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Buffer;
 with Map;
+with Const;
 with Store_All;
 with Int_Range;
 with CLContexts;
@@ -14,7 +15,8 @@ procedure Safe_Get_Example is
    package Out_Buf is new Buffer (Integer, 8, Ctx);
    package Rng is new Int_Range (Integer, -1, 6);
 
-   package Safe_Buf_Get is new In_Buf.Safe_Get (0);
+   package Zero is new Const (Integer, 0);
+   package Safe_Buf_Get is new In_Buf.Safe_Get (Zero.E);
    package Transform is new Map (Safe_Buf_Get.Op, Rng.I);
    package Kernel is new Store_All (Transform.I, Out_Buf.A);
 

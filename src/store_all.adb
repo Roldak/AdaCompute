@@ -22,7 +22,7 @@ package body Store_All is
       return "__kernel void main("
          & Codegen.Signature (Ctx) & ") { " & LF
          & "size_t i = get_global_id(0); " & LF
-         & To_String (Ctx.Statements) & LF
+         & To_String (Codegen.Pop_Statements (Ctx))
          & Content & ";" & LF
          & "}";
    end Generate_Dispatch_Code;

@@ -22,15 +22,21 @@ package body Reduce_2 is
       package Coll_Get is new Coll.Get (Index_1.E, Index_2.E);
       package Op_Call is new Op.Call (Acc.E, Coll_Get.E);
 
-      Init_Code : constant Codegen.Code :=
-         Init.Generate_Code (Ctx);
+      Init_Code : constant Codegen.Code := Init.Generate_Code (Ctx);
+      Init_Stmts : constant Unbounded_String := Codegen.Pop_Statements (Ctx);
+
+      Op_Call_Code : constant Codegen.Code := Op_Call.Generate_Code (Ctx);
+      Op_Call_Stmts : constant Unbounded_String :=
+         Codegen.Pop_Statements (Ctx);
+
       Len : constant Natural := Coll.Length_2;
    begin
-      Ctx.Statements := Ctx.Statements
+      Ctx.Statements := Init_Stmts
          & "int " & Reference & " = " & Init_Code & ";" & LF
          & "for (int r = 0; r < " & Len'Image & "; ++r) { " & LF
-         & Reference & " = " & Op_Call.Generate_Code (Ctx) & ";" & LF
-         & "}";
+         & Op_Call_Stmts
+         & Reference & " = " & Op_Call_Code & ";" & LF
+         & "}" & LF;
       return Reference;
    end Generate_Indexable_Code;
 end Reduce_2;

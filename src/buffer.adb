@@ -1,4 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 
 with GID;
 
@@ -53,9 +55,18 @@ package body Buffer is
          Obj : constant Codegen.CL_Object :=
            (Name   => Reference'Unrestricted_Access,
             Object => Internal_Buffer'Unrestricted_Access);
+
+         Stmts : constant Unbounded_String := Codegen.Pop_Statements (Ctx);
+         Default_Code : constant Codegen.Code := Default.Generate_Code (Ctx);
       begin
          Codegen.Append_CL_Object (Ctx, Obj);
-         return Reference & "[" & Index_Code & "]";
+         Ctx.Statements := Stmts
+            & "int idx = " & Index_Code & ";" & LF
+            & Codegen.Pop_Statements (Ctx);
+         return "(idx < 0 || idx >= " & Size'Image & ") ? "
+            & Default_Code
+            & " : "
+            & Reference & "[idx]";
       end Generate_Code;
    end Safe_Get;
 

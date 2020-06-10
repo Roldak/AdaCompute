@@ -3,6 +3,7 @@ with CLContexts;
 with Indexable;
 with Index_Assignable;
 with Operation;
+with Expr;
 
 with CL.Memory.Buffers;
 
@@ -33,7 +34,7 @@ package Buffer is
    package A is new Index_Assignable (T, Size, Generate_Assignable_Code);
 
    generic
-      Default : T;
+      with package Default is new Expr (T, <>);
    package Safe_Get is
       function Generate_Code
         (Index_Code : Codegen.Code;

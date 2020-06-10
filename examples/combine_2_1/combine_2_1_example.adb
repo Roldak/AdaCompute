@@ -17,8 +17,9 @@ procedure Combine_2_1_Example is
    package Out_Buf is new Buffer (Integer, 8, Ctx);
    package Rng is new Int_Range (Integer, -1, 6);
 
+   package Zero is new Const (Integer, 0);
    package Two is new Const (Integer, 2);
-   package Safe_Buf_Get is new In_Buf.Safe_Get (0);
+   package Safe_Buf_Get is new In_Buf.Safe_Get (Zero.E);
    package Add is new BinOps.Arithmetic_2 (BinOps.Add, Integer);
    package Add_Get is new Operations.Combine_2_1 (Add.Op, Safe_Buf_Get.Op);
    package Partial is new Add_Get.Op.Apply_First (Two.E);

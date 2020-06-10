@@ -1,4 +1,12 @@
 package body Codegen is
+   function Pop_Statements
+     (Ctx : in out Emit_Context) return Unbounded_String is
+      Stmts : Unbounded_String := Ctx.Statements;
+   begin
+      Ctx.Statements := Null_Unbounded_String;
+      return Stmts;
+   end Pop_Statements;
+
    procedure Append_CL_Object (Ctx : in out Emit_Context; Obj : CL_Object) is
    begin
       for X of Ctx.Kernel_Arguments loop
