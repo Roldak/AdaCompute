@@ -45,6 +45,20 @@ package body Buffer is
       return Reference & "[" & Index_Code & "] = " & Value_Code;
    end Generate_Assignable_Code;
 
+   package body Safe_Get is
+      function Generate_Code
+        (Index_Code : Codegen.Code;
+         Ctx : in out Codegen.Emit_Context) return Codegen.Code
+      is
+         Obj : constant Codegen.CL_Object :=
+           (Name   => Reference'Unrestricted_Access,
+            Object => Internal_Buffer'Unrestricted_Access);
+      begin
+         Codegen.Append_CL_Object (Ctx, Obj);
+         return Reference & "[" & Index_Code & "]";
+      end Generate_Code;
+   end Safe_Get;
+
    procedure Write (Values : Array_Type) is
    begin
       Internal_Buffer := Create_From_Source

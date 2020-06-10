@@ -2,6 +2,7 @@ with Codegen;
 with CLContexts;
 with Indexable;
 with Index_Assignable;
+with Operation;
 
 with CL.Memory.Buffers;
 
@@ -30,6 +31,16 @@ package Buffer is
       Ctx : in out Codegen.Emit_Context) return Codegen.Code;
 
    package A is new Index_Assignable (T, Size, Generate_Assignable_Code);
+
+   generic
+      Default : T;
+   package Safe_Get is
+      function Generate_Code
+        (Index_Code : Codegen.Code;
+         Ctx : in out Codegen.Emit_Context) return Codegen.Code;
+
+      package Op is new Operation (Integer, T, Generate_Code);
+   end Safe_Get;
 
    Internal_Buffer : aliased CL.Memory.Buffers.Buffer;
 
