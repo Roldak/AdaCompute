@@ -78,3 +78,45 @@ Another big feature is that the programs are written using high-level functional
 
 - Clone and build [OpenCLAda](https://github.com/flyx/OpenCLAda) (GL support not required), make sure `opencl.gpr` is in your `GPR_PROJECT_PATH` environment variable.
 - Run `sh make`
+
+## More complex example
+
+Here is how to describe 1D convolution:
+
+```ada
+--  The input and output buffer
+package Buf is new Buffer (Integer, 10, Ctx);
+
+--  Declare some constants
+package Rng_1 is new Int_Range (Integer, 0, 9);
+package Rng_2 is new Int_Range (Integer, -1, 1);
+package Zero is new Const (Integer, 0);
+
+--  Create the operation `(i, j) => buffer[i + j]` (with bound checks)
+package Add is new BinOps.Arithmetic_2 (BinOps.Add, Integer);
+package Buf_Get is new Buf.Safe_Get (Zero.E);
+package Buf_Add_Get is new Operations.Combine_2_1 (Add.Op, Buf_Get.Op);
+
+--  Compute the convolution
+package Trf is new Map_2 (Buf_Add_Get.Op, Rng_1.I, Rng_2.I);
+package Red is new Reduce_2 (Zero.E, Add.Op, Trf.I);
+
+--  Store the convolution of each element back in the buffer.
+package Kernel is new Store_All (Red.I, Buf.A);
+```
+
+This generates the following OpenCL kernel:
+
+```c
+__kernel void main(__global int* buffer_1) {
+   size_t i = get_global_id(0);
+   int reduce_2 =  0;
+   for (int r = 0; r <  3; ++r) {
+      int idx = i + r - 1;
+      reduce_2 = reduce_2 + ((idx < 0 || idx >=  10) ? 0 : buffer_1[idx]);
+   }
+   buffer_1[i] = reduce_2;
+}
+```
+
+Applied to a buffer containing `[ 1,  6,  4,  2,  5,  7,  2,  1,  7,  3]`, it yields `[ 7,  11,  12,  11,  14,  14,  10,  10,  11,  10]`. You can find the source code for this example in the `examples` directory.
