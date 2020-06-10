@@ -3,6 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Buffer;
 with BinOps;
 with Map;
+with Store_All;
 with Const;
 with Int_Range;
 with CLContexts;
@@ -18,7 +19,7 @@ procedure Main is
 
    package Rng is new Int_Range (Integer, 0, 9);
    package Transform is new Map (Mul.Op, Rng.I);
-   package Kernel is new Transform.Dispatch (Buf.A);
+   package Kernel is new Store_All (Transform.I, Buf.A);
 
    Values : Buf.Array_Type;
 
@@ -38,7 +39,7 @@ begin
       Values (I) := I;
    end loop;
 
-   Put_Line (Kernel.Generate_Code (Emit_Ctx));
+   Put_Line (Kernel.Generate_Dispatch_Code (Emit_Ctx));
 
    Dump;
    Buf.Write (Values);

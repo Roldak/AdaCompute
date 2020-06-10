@@ -20,10 +20,7 @@ procedure Double is
    package Trsf is new Map (Op.Op, Buf.I);
    
    --  Copy the transformed values back in the buffer
-   package Cpy is new Copy (Trsf.I, Buf.A);
-   
-   --  Dispatch this whole process across GPU cores
-   package Kernel is new Cpy.Dispatch;
+   package Kernel is new Store_All (Trsf.I, Buf.A);
 begin
    --  Write a random array to the GPU buffer
    Buf.Write ((5, 4, 1, 6, 3, 6, 8, 2, 2, 5));

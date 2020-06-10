@@ -9,7 +9,7 @@ generic
      (Index_Code : Codegen.Code;
       Ctx : in out Codegen.Emit_Context) return Codegen.Code;
 package Indexable is
-   function Length return Natural is (Size);
+   Length : constant Natural := Size;
 
    generic
       with package Index is new Expr (Natural, <>);
