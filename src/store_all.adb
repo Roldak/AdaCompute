@@ -1,3 +1,7 @@
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with Variable;
 
 with CL.Programs;
@@ -16,10 +20,11 @@ package body Store_All is
       Content : constant Codegen.Code := Out_Set.Generate_Code (Ctx);
    begin
       return "__kernel void main("
-         &  Codegen.Signature (Ctx) & ") { "
-         & "size_t i = get_global_id(0); "
-         &  Content
-         & "; }";
+         & Codegen.Signature (Ctx) & ") { " & LF
+         & "size_t i = get_global_id(0); " & LF
+         & To_String (Ctx.Statements) & LF
+         & Content & ";" & LF
+         & "}";
    end Generate_Dispatch_Code;
 
    procedure Compute (Ctx : CLContexts.Context) is

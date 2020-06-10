@@ -6,7 +6,7 @@ project AdaCompute is
    for Exec_Dir use "bin";
 
    for Main use ("double_example.adb", "safe_get_example.adb",
-                 "combine_2_1_example.adb");
+                 "combine_2_1_example.adb", "map_reduce_2_example.adb");
 
    package Compiler renames OpenCL.Compiler;
 

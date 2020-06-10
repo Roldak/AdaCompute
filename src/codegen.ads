@@ -1,3 +1,4 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Vectors;
 
 with CL;
@@ -19,6 +20,7 @@ package Codegen is
 
    type Emit_Context is record
       Kernel_Arguments : CL_Object_Vectors.Vector;
+      Statements : Unbounded_String;
    end record;
 
    procedure Append_CL_Object (Ctx : in out Emit_Context; Obj : CL_Object);
