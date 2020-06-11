@@ -16,8 +16,11 @@ package body Reduce_2 is
      (Index_Code : Codegen.Code;
       Ctx : in out Codegen.Emit_Context) return Codegen.Code
    is
+      Loop_Idx : constant Codegen.Code :=
+         Codegen.Fresh_Id (Ctx, "r");
+
       package Index_1 is new Variable (Natural, Index_Code);
-      package Index_2 is new Variable (Natural, "r");
+      package Index_2 is new Variable (Natural, Loop_Idx);
       package Acc is new Variable (Init.Expr_Type, Reference);
       package Coll_Get is new Coll.Get (Index_1.E, Index_2.E);
       package Op_Call is new Op.Call (Acc.E, Coll_Get.E);
@@ -33,7 +36,9 @@ package body Reduce_2 is
    begin
       Ctx.Statements := Init_Stmts
          & "int " & Reference & " = " & Init_Code & ";" & LF
-         & "for (int r = 0; r < " & Len'Image & "; ++r) { " & LF
+         & "for (int " & Loop_Idx & " = 0; "
+         & Loop_Idx & " < " & Len'Image & "; ++"
+         & Loop_Idx & ") { " & LF
          & Op_Call_Stmts
          & Reference & " = " & Op_Call_Code & ";" & LF
          & "}" & LF;

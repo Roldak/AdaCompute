@@ -21,7 +21,12 @@ package Codegen is
    type Emit_Context is record
       Kernel_Arguments : CL_Object_Vectors.Vector;
       Statements : Unbounded_String;
+      Fresh_Int : Integer := 0;
    end record;
+
+   function Fresh_Id
+     (Ctx    : in out Emit_Context;
+      Prefix : Codegen.Code) return Codegen.Code;
 
    function Pop_Statements
      (Ctx : in out Emit_Context) return Unbounded_String;

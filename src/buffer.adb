@@ -58,15 +58,18 @@ package body Buffer is
 
          Stmts : constant Unbounded_String := Codegen.Pop_Statements (Ctx);
          Default_Code : constant Codegen.Code := Default.Generate_Code (Ctx);
+
+         Fresh_Idx : constant Codegen.Code := Codegen.Fresh_Id (Ctx, "idx");
       begin
          Codegen.Append_CL_Object (Ctx, Obj);
          Ctx.Statements := Stmts
-            & "int idx = " & Index_Code & ";" & LF
+            & "int " & Fresh_Idx & " = " & Index_Code & ";" & LF
             & Codegen.Pop_Statements (Ctx);
-         return "(idx < 0 || idx >= " & Size'Image & ") ? "
+         return "(" & Fresh_Idx & " < 0 || " & Fresh_Idx & " >= "
+            & Size'Image & ") ? "
             & Default_Code
             & " : "
-            & Reference & "[idx]";
+            & Reference & "[" & Fresh_Idx & "]";
       end Generate_Code;
    end Safe_Get;
 

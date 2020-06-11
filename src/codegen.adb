@@ -1,4 +1,15 @@
 package body Codegen is
+   function Fresh_Id
+     (Ctx    : in out Emit_Context;
+      Prefix : Codegen.Code) return Codegen.Code
+   is
+      Fresh_Str : constant Codegen.Code := Ctx.Fresh_Int'Image;
+   begin
+      Ctx.Fresh_Int := Ctx.Fresh_Int + 1;
+      return Prefix & "_" & Fresh_Str
+         (Fresh_Str'First + 1 .. Fresh_Str'Last);
+   end Fresh_Id;
+
    function Pop_Statements
      (Ctx : in out Emit_Context) return Unbounded_String is
       Stmts : Unbounded_String := Ctx.Statements;
