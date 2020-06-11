@@ -49,6 +49,8 @@ __kernel main(__global int* buffer_1) {
 
 ## Features
 
+*Disclaimer: everything is still work in progress.*
+
 ### Static checking
 
 One of the main added value of this DSL is that it is statically checked. That is, any error made while designing the kernel will be reported at compile-time by your Ada compiler.
