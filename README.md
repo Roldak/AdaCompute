@@ -74,7 +74,7 @@ values to a buffer of natural numbers. Once you fix this (replace `Natural` by `
 
 ### High-level description of kernels
 
-Another big feature is that the programs are written using high-level functional-style constructs. These are then compiled to low-level OpenCL kernels, as shown in the introductory example. Such constructs include `Map`, `Reduce`, etc. 
+Another big feature is that the programs are written using high-level functional-style constructs. These are then compiled to low-level OpenCL kernels, as shown in the introductory example. Such constructs include `Zip`, `Map`, `Reduce`, etc. 
 
 ## Build Steps
 
