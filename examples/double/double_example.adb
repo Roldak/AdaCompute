@@ -9,9 +9,7 @@ with CLContexts;
 with Codegen;
 
 procedure Double_Example is
-   Ctx : constant CLContexts.Context := CLContexts.Default;
-
-   package Buf is new Buffer (Integer, 10, Ctx);
+   package Buf is new Buffer (Integer, 10);
 
    package Two is new Const (Integer, 2);
    package Mul is new BinOps.Arithmetic_1 (BinOps.Multiply, Two.E);
@@ -22,11 +20,12 @@ procedure Double_Example is
    procedure Dump is new Buf.Dump (Integer'Image);
 
    Emit_Ctx : Codegen.Emit_Context;
+   Ctx : constant CLContexts.Context := CLContexts.Default;
 begin
    Put_Line (Kernel.Generate_Dispatch_Code (Emit_Ctx));
 
-   Buf.Write ((5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
-   Dump;
+   Buf.Write (Ctx, (5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
+   Dump (Ctx);
    Kernel.Compute (Ctx);
-   Dump;
+   Dump (Ctx);
 end Double_Example;

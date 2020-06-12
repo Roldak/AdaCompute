@@ -13,9 +13,7 @@ with CLContexts;
 with Codegen;
 
 procedure Convolution_1D_Example is
-   Ctx : constant CLContexts.Context := CLContexts.Default;
-
-   package Buf is new Buffer (Integer, 10, Ctx);
+   package Buf is new Buffer (Integer, 10);
 
    package Rng_1 is new Int_Range (Integer, 0, 9);
    package Rng_2 is new Int_Range (Integer, -1, 1);
@@ -32,11 +30,12 @@ procedure Convolution_1D_Example is
    procedure Dump is new Buf.Dump (Integer'Image);
 
    Emit_Ctx : Codegen.Emit_Context;
+   Ctx : constant CLContexts.Context := CLContexts.Default;
 begin
    Put_Line (Kernel.Generate_Dispatch_Code (Emit_Ctx));
 
-   Buf.Write ((1, 6, 4, 2, 5, 7, 2, 1, 7, 3));
-   Dump;
+   Buf.Write (Ctx, (1, 6, 4, 2, 5, 7, 2, 1, 7, 3));
+   Dump (Ctx);
    Kernel.Compute (Ctx);
-   Dump;
+   Dump (Ctx);
 end Convolution_1D_Example;

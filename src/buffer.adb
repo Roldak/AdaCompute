@@ -14,6 +14,8 @@ package body Buffer is
       "buffer_" & Buffer_Id_Str
         (Buffer_Id_Str'First + 1 .. Buffer_Id_Str'Last);
 
+   Internal_Buffer : aliased CL.Memory.Buffers.Buffer;
+
    function Create_From_Source is new
       CL.Memory.Buffers.Constructors.Create_From_Source
         (Element_Type, Unconstrained_Array_Type);
@@ -73,13 +75,13 @@ package body Buffer is
       end Generate_Code;
    end Safe_Get;
 
-   procedure Write (Values : Array_Type) is
+   procedure Write (Ctx : CLContexts.Context; Values : Array_Type) is
    begin
       Internal_Buffer := Create_From_Source
-         (Ctx.Context, CL.Memory.Read_Write, Values);
+        (Ctx.Context, CL.Memory.Read_Write, Values);
    end Write;
 
-   procedure Read (Values : out Array_Type) is
+   procedure Read (Ctx : CLContexts.Context; Values : out Array_Type) is
 		Event  : CL.Events.Event;
    begin
       Buffer_Objects.Read_Buffer
@@ -87,10 +89,10 @@ package body Buffer is
       Event.Wait_For;
    end Read;
 
-   procedure Dump is
+   procedure Dump (Ctx : CLContexts.Context) is
       Values : Array_Type;
    begin
-      Read (Values);
+      Read (Ctx, Values);
       Put ("[");
       for I in Values'Range loop
          Put (Image (Values (I)));

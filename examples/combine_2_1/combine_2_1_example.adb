@@ -11,10 +11,8 @@ with CLContexts;
 with Codegen;
 
 procedure Combine_2_1_Example is
-   Ctx : constant CLContexts.Context := CLContexts.Default;
-
-   package In_Buf is new Buffer (Integer, 10, Ctx);
-   package Out_Buf is new Buffer (Integer, 8, Ctx);
+   package In_Buf is new Buffer (Integer, 10);
+   package Out_Buf is new Buffer (Integer, 8);
    package Rng is new Int_Range (Integer, -1, 6);
 
    package Zero is new Const (Integer, 0);
@@ -30,12 +28,14 @@ procedure Combine_2_1_Example is
    procedure Out_Dump is new Out_Buf.Dump (Integer'Image);
 
    Emit_Ctx : Codegen.Emit_Context;
+   Ctx : constant CLContexts.Context := CLContexts.Default;
+
 begin
    Put_Line (Kernel.Generate_Dispatch_Code (Emit_Ctx));
 
-   In_Buf.Write ((5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
-   Out_Buf.Write ((others => 0));
-   In_Dump;
+   In_Buf.Write (Ctx, (5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
+   Out_Buf.Write (Ctx, (others => 0));
+   In_Dump (Ctx);
    Kernel.Compute (Ctx);
-   Out_Dump;
+   Out_Dump (Ctx);
 end Combine_2_1_Example;

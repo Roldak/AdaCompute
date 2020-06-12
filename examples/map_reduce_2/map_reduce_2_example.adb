@@ -12,9 +12,7 @@ with CLContexts;
 with Codegen;
 
 procedure Map_Reduce_2_Example is
-   Ctx : constant CLContexts.Context := CLContexts.Default;
-
-   package Out_Buf is new Buffer (Natural, 10, Ctx);
+   package Out_Buf is new Buffer (Natural, 10);
 
    package Rng_1 is new Int_Range (Natural, 0, 9);
    package Rng_2 is new Int_Range (Natural, 0, 5);
@@ -28,10 +26,11 @@ procedure Map_Reduce_2_Example is
    procedure Out_Dump is new Out_Buf.Dump (Natural'Image);
 
    Emit_Ctx : Codegen.Emit_Context;
+   Ctx : constant CLContexts.Context := CLContexts.Default;
 begin
    Put_Line (Kernel.Generate_Dispatch_Code (Emit_Ctx));
 
-   Out_Buf.Write ((others => 3));
+   Out_Buf.Write (Ctx, (others => 3));
    Kernel.Compute (Ctx);
-   Out_Dump;
+   Out_Dump (Ctx);
 end Map_Reduce_2_Example;

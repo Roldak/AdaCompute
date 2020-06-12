@@ -10,7 +10,6 @@ with CL.Memory.Buffers;
 generic
    type T is private;
    Size : Natural;
-   Ctx  : CLContexts.Context;
 package Buffer is
    subtype Element_Type is T;
 
@@ -43,13 +42,11 @@ package Buffer is
       package Op is new Operation (Integer, T, Generate_Code);
    end Safe_Get;
 
-   Internal_Buffer : aliased CL.Memory.Buffers.Buffer;
+   procedure Write (Ctx : CLContexts.Context; Values : Array_Type);
 
-   procedure Write (Values : Array_Type);
-
-   procedure Read (Values : out Array_Type);
+   procedure Read (Ctx : CLContexts.Context; Values : out Array_Type);
 
    generic
       with function Image (X : T) return String;
-   procedure Dump;
+   procedure Dump (Ctx : CLContexts.Context);
 end Buffer;

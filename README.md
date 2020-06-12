@@ -21,15 +21,17 @@ procedure Double is
    
    --  Copy the transformed values back in the buffer
    package Kernel is new Store_All (Trsf.I, Buf.A);
+
+   Ctx : constant CLContexts.Context := CLContexts.Default;
 begin
    --  Write a random array to the GPU buffer
-   Buf.Write ((5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
+   Buf.Write (Ctx, (5, 4, 1, 6, 3, 6, 8, 2, 2, 5));
    
    --  Execute the kernel
-   Kernel.Execute;
+   Kernel.Execute (Ctx);
    
    --  Read back the values from the GPU and print them
-   Buf.Dump;
+   Buf.Dump (Ctx);
 end Double;
 ```
 This prints:
@@ -87,7 +89,7 @@ Here is how to describe 1D convolution:
 
 ```ada
 --  The input and output buffer
-package Buf is new Buffer (Integer, 10, Ctx);
+package Buf is new Buffer (Integer, 10);
 
 --  Declare some constants
 package Rng_1 is new Int_Range (Integer, 0, 9);
