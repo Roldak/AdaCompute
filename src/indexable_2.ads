@@ -11,6 +11,8 @@ generic
       Index_2_Code : Codegen.Code;
       Ctx : in out Codegen.Emit_Context) return Codegen.Code;
 package Indexable_2 is
+   subtype Element_Type is Result_Type;
+
    Length_1 : constant Natural := Size_1;
    Length_2 : constant Natural := Size_2;
 

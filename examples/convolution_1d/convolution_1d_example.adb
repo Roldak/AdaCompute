@@ -24,7 +24,7 @@ procedure Convolution_1D_Example is
    package Buf_Add_Get is new Operations.Combine_2_1 (Add.Op, Buf_Get.Op);
 
    package Trf is new Map_2 (Buf_Add_Get.Op, Rng_1.I, Rng_2.I);
-   package Red is new Reduce_2 (Zero.E, Add.Op, Trf.I);
+   package Red is new Reduce_2 (Trf.I, Add.Op);
    package Kernel is new Store_All (Red.I, Buf.A);
 
    procedure Dump is new Buf.Dump (Integer'Image);

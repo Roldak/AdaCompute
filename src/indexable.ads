@@ -9,6 +9,8 @@ generic
      (Index_Code : Codegen.Code;
       Ctx : in out Codegen.Emit_Context) return Codegen.Code;
 package Indexable is
+   subtype Element_Type is Result_Type;
+
    Length : constant Natural := Size;
 
    generic
