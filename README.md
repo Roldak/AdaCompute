@@ -82,6 +82,7 @@ Another big feature is that the programs are written using high-level functional
 
 - Clone and build [OpenCLAda](https://github.com/flyx/OpenCLAda) (GL support not required), make sure `opencl.gpr` is in your `GPR_PROJECT_PATH` environment variable.
 - Run `sh make`
+- Check out the examples in the `./bin` directory!
 
 ## More complex example
 
