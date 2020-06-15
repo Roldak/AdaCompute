@@ -1,5 +1,5 @@
 # AdaCompute
-An Ada-hosted, statically-checked, high-level DSL that compiles to OpenCL kernels.
+An *experimental* Ada-hosted, statically-checked, high-level DSL that compiles to OpenCL kernels.
 
 ## Example
 
